@@ -1,7 +1,7 @@
-## Bem vindo à loja (nome da loja)
+# Bem vindo à loja (nome da loja)
 
-#Instalação:
+## Instalação:
 
-# cd projeto-jsdom-fakestore
-# npm install
-# npm run dev
+### cd projeto-jsdom-fakestore
+### npm install
+### npm run dev
