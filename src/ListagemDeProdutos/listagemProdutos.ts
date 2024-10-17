@@ -31,7 +31,7 @@ listaProdutos().then(produtos => {
     
     const adicionarAoCarrinhoButton = produtoDiv.querySelector('button');
     adicionarAoCarrinhoButton?.addEventListener('click', () => {
-      // Implementar a função de adicionar ao carrinho aqui
+      // todo: lógica para adicionar ao carrinho
       console.log(`Adicionado ao carrinho: ${produto.title}`);
     });
     
