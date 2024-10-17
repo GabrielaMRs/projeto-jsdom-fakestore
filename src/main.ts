@@ -1,16 +1,24 @@
-/* Regras Gerais do Projeto
-Autenticação:
+import './style.css'
+import typescriptLogo from './typescript.svg'
+import viteLogo from '/vite.svg'
+import { setupCounter } from './counter.ts'
 
-Armazene o token de autenticação no sessionStorage.
-Verifique a presença do token para permitir o acesso às páginas protegidas.
-Gerenciamento de Estado:
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+  <div>
+    <a href="https://vitejs.dev" target="_blank">
+      <img src="${viteLogo}" class="logo" alt="Vite logo" />
+    </a>
+    <a href="https://www.typescriptlang.org/" target="_blank">
+      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
+    </a>
+    <h1>Vite + TypeScript</h1>
+    <div class="card">
+      <button id="counter" type="button"></button>
+    </div>
+    <p class="read-the-docs">
+      Click on the Vite and TypeScript logos to learn more
+    </p>
+  </div>
+`
 
-Utilize localStorage para armazenar o carrinho de compras, garantindo que os dados persistam entre sessões. (Extra)
-Consumo de APIs:
-
-Utilize fetch com Promises e async/await para interagir com a Fake Store API.
-Trate erros de requisição de forma adequada, exibindo mensagens para o usuário.
-Interatividade:
-
-Implemente manipulação de DOM para ações específicas, como adicionar um produto ao carrinho.
-Assegure que a interface seja responsiva e amigável em diferentes dispositivo */
+setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
