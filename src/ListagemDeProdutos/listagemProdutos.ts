@@ -8,7 +8,6 @@ Regras:
 
 Apenas usuários logados podem adicionar produtos ao carrinho.
  */
-
 async function listaProdutos(){
   const response = await fetch('https://fakestoreapi.com/products');
   const data = await response.json();
@@ -29,7 +28,7 @@ listaProdutos().then(produtos => {
       <p>${produto.description}</p>
       <button>Adicionar ao carrinho</button>
     `;
-
+    
     const adicionarAoCarrinhoButton = produtoDiv.querySelector('button');
     adicionarAoCarrinhoButton?.addEventListener('click', () => {
       // Implementar a função de adicionar ao carrinho aqui
