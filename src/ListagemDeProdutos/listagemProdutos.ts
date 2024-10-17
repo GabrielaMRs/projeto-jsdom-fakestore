@@ -16,7 +16,7 @@ async function listaProdutos(){
 
 listaProdutos().then(produtos => {
   const produtosContainer = document.getElementById('produtos');
-  
+  //verificar a tipagem 
   produtos.forEach((produto: { title: any; image: any; price: any; description: any; }) => {
     const produtoDiv = document.createElement('div');
     produtoDiv.className = 'produto';
