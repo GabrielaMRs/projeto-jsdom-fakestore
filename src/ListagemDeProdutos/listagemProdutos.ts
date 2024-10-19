@@ -16,7 +16,7 @@ async function listaProdutos() {
 }
 
 listaProdutos().then((produtos) => {
-  const produtosContainer = document.getElementById("produtos");
+  const produtosContainer = document.getElementById("produtos-container");
 
   //todo verificar a tipagem
   produtos.forEach(
@@ -28,13 +28,21 @@ listaProdutos().then((produtos) => {
       id: number;
     }) => {
       const produtoDiv = document.createElement("div");
+      produtoDiv.classList.add("cartao-produto");
 
       produtoDiv.innerHTML = `
       <h2>${produto.title}</h2>
-      <img src="${produto.image}" alt="${produto.title}" />
-      <p>Preço: $${produto.price}</p>
-      <p>${produto.description}</p>
-      <button id="button-${produto.id}">Adicionar ao carrinho</button>
+      <div class="foto-container">
+        <img src="${produto.image}" alt="${produto.title}"/>
+      </div>
+      
+      <div class="info-container">
+        <p>${produto.description}</p>
+        <div class="compra-container">
+          <p>Preço: $${produto.price}</p>
+          <button id="button-${produto.id}">Adicionar ao carrinho</button>
+        </div>
+      </div>
     `;
       produtosContainer?.appendChild(produtoDiv);
 
