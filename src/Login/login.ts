@@ -35,10 +35,8 @@ async function login() {
     if (!response.ok) {
       throw new Error('Usuário e/ou senha inválido(s).');
     }
-
     const data = await response.json();
     sessionStorage.setItem('token', data.token);
-    console.log(sessionStorage.setItem('token', data.token))
 
     window.location.pathname = '/src/ListagemDeProdutos/listagemProdutos.html';
   } catch (error: unknown) {
