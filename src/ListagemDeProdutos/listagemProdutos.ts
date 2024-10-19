@@ -44,7 +44,7 @@ listaProdutos().then((produtos) => {
 
       adicionarAoCarrinhoButton?.addEventListener("click", () => {
         // todo: lógica para adicionar ao carrinho
-        if (sessionStorage.getItem("token")) {
+        if (sessionStorage.getItem("authToken")) {
           console.log("Adicionado ao carrinho: " + produto.title);
           adicionarAoCarrinho(produto);
         } else {

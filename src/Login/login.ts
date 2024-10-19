@@ -1,51 +1,60 @@
-/* 1. Tela de Login
-Funcionalidades:
+const loginForm = document.getElementById('loginForm') as HTMLFormElement;
+const usernameInput = document.getElementById('username') as HTMLInputElement;
+const passwordInput = document.getElementById('password') as HTMLInputElement;
+const errorMessage = document.getElementById('errorMessage') as HTMLDivElement;
 
-Formulário de login com campos para email e senha. (Campo senha, ser possível ver ou não os caracteres)
-Validação de entrada (e.g., campos obrigatórios, formato de email).
-Autenticação do usuário utilizando a Fake Store API.
-Armazenamento do token de autenticação no sessionStorage.
-Regras:
+const FAKE_STORE_API_URL = 'https://fakestoreapi.com/auth/login';
 
-Apenas usuários autenticados podem acessar as demais funcionalidades da aplicação.
-Mensagens de erro claras para tentativas de login inválidas. */
+loginForm.addEventListener('submit', async (event: Event) => {
+  event.preventDefault();
 
-const campoEmail = document.getElementById('email') as HTMLInputElement;
-const campoSenha = document.getElementById('senha') as HTMLInputElement;
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
 
-
-async function login() {
-  const email = campoEmail.value;
-  const senha = campoSenha.value;
-
-  if (!email || !senha) {
-    alert('Preencha todos os campos.');
+  if (!username || !password) {
+    displayError('Todos os campos são obrigatórios.');
     return;
   }
 
   try {
-    const response = await fetch('https://fakestoreapi.com/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username: email, password: senha }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Usuário e/ou senha inválido(s).');
+    const token = await authenticateUser(username, password);
+    if (token) {
+      sessionStorage.setItem('authToken', token);
+      window.location.pathname = '/src/ListagemDeProdutos/listagemProdutos.html'; 
     }
-    const data = await response.json();
-    sessionStorage.setItem('token', data.token);
+  } catch (error) {
+    displayError('Senha ou Usuário inválidos. Tente novamente.');
+  }
+});
 
-    window.location.pathname = '/src/ListagemDeProdutos/listagemProdutos.html';
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      alert(error.message);
-    } 
+async function authenticateUser(username: string, password: string): Promise<string | null> {
+  const response = await fetch(FAKE_STORE_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: username, 
+      password: password, 
+    }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data.token; 
+  } else {
+    throw new Error('Falha na autenticação do usuário');
   }
 }
 
-const buttonLogin = document.getElementById('buttonLogin');
+function displayError(message: string) {
+  errorMessage.textContent = message;
+  errorMessage.style.display = 'block';
+}
 
-buttonLogin?.addEventListener('click', () => login())
+usernameInput.addEventListener('input', clearError);
+passwordInput.addEventListener('input', clearError);
+
+function clearError() {
+  errorMessage.style.display = 'none';
+}
