@@ -15,9 +15,8 @@ interface Produto {
   price: number;
   description: string;
   id: number;
-  quantidade?: number; // Adicionando quantidade como opcional
+  quantidade: number;
 }
-
 
 const token = sessionStorage.getItem("authToken");
 
@@ -114,7 +113,7 @@ function adicionarAoCarrinho(produto: Produto) {
   window.location.pathname = "/src/Carrinho/carrinho.html";
 }
 
-const buttonLogin = document.getElementById("buttonLogin");
+const buttonLogin = document.getElementById("buttonLogin") as HTMLButtonElement;
 
 function updateToken() {
   return sessionStorage.getItem("authToken");
@@ -122,22 +121,29 @@ function updateToken() {
 
 function updateButtonText() {
   const token = updateToken();
-  if (buttonLogin) {
-    buttonLogin.innerText = token ? "Sair" : "Login";
-  }
+  buttonLogin.innerText = token ? "Sair" : "Login";
 }
 
-if (buttonLogin) {
-  updateButtonText();
 
-  buttonLogin.addEventListener("click", () => {
-    const token = updateToken();
-    if (token) {
-      sessionStorage.removeItem("authToken");
-      updateButtonText();
-    } else {
-      window.location.pathname = "/src/Login/login.html";
-    }
-  });
-} 
+updateButtonText();
 
+buttonLogin.addEventListener("click", () => {
+  const token = updateToken();
+  if (token) {
+    sessionStorage.removeItem("authToken");
+    updateButtonText();
+  } else {
+    window.location.pathname = "/src/Login/login.html";
+  }
+});
+
+const buttonCarrinho = document.getElementById('carrinho') as HTMLButtonElement;
+
+buttonCarrinho.addEventListener("click", () => {
+  if(token){
+    window.location.pathname = "/src/Carrinho/carrinho.html";
+  } else {
+    alert("Faça login para ver o seu carrinho.");
+    window.location.pathname = "/src/Login/login.html";
+  }
+})
