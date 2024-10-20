@@ -9,6 +9,10 @@ Regras:
 Acesso à página de checkout somente para usuários autenticados.
 Garantir que o carrinho reflete o usuário atual logado. */
 
+interface IProdutoId {
+  productId: number;
+  quantidade: number;
+}
 interface Produto {
   title: string;
   image: string;
@@ -18,79 +22,121 @@ interface Produto {
   quantidade?: number; // Adicionando quantidade como opcional
 }
 
-function listaCarrinho() {
-  const carrinhoString = sessionStorage.getItem("carrinho");
+interface ICarrinhoUser {
+  id: number;
+  date: string;
+  products: string[];
+}
+
+function decodeJWT(token: string): any {
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+
+  return JSON.parse(jsonPayload);
+}
+//pega o carrinho do usuário logado
+async function getUserCarts() {
+  const token = sessionStorage.getItem("authToken");
+  const userId = token ? decodeJWT(token).sub : null;
+
+  const response = await fetch(`https://fakestoreapi.com/carts/user/${userId}`);
+  const carrinho = await response.json();
+  //armazeno o carrinho do usuário na session storage
+  sessionStorage.setItem(`carrinho_${userId}`, JSON.stringify(carrinho));
+}
+//preciso pegar o produto que está no carrinho do usuário para montar a lista
+async function getASingleProduct(productId: number) {
+  const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
+  const produto = await response.json();
+  return produto;
+}
+
+async function listaCarrinho() {
+  await getUserCarts(); // Aguardar a chamada para garantir que o carrinho seja carregado
+  const token = sessionStorage.getItem("authToken");
+  const userId = token ? decodeJWT(token).sub : null;
+
+  if (!userId) {
+    console.log("Usuário não autenticado.");
+    return; // Retorna se não estiver autenticado
+  }
+
   const carrinhoContainer = document.getElementById("carrinho");
+  const carrinhoString = sessionStorage.getItem(`carrinho_${userId}`);
 
   if (carrinhoString) {
-    const carrinho: Produto[] = JSON.parse(carrinhoString);
-    carrinho.forEach((produto: Produto) => {
+    const carrinho: ICarrinhoUser = JSON.parse(carrinhoString)[0];
+    console.log(carrinho);
+    const produtosDoCarrinho = carrinho.products;
 
-      const carrinhoDiv = document.createElement("div");
-      carrinhoDiv.innerHTML = `
+    // criar um arra de promessas para cada produto
+    const promessas = produtosDoCarrinho.map(product => {
+      const idProduto = product.productId;
+      return getASingleProduct(idProduto).then(produto => {
+        const carrinhoDiv = document.createElement("div");
+        console.log(produto)
+        carrinhoDiv.innerHTML = `
           <div class="box_1">
-          <div class="product">
-            <img class="product_img" src="${produto.image}" alt="">
-            <div class="product_descricao">
-              <div class="product_title">
-                <p>${produto.title}</p>
-                <img src="" alt="">
+            <div class="product">
+              <img class="product_img" src="${produto.image}" alt="">
+              <div class="product_descricao">
+                <div class="product_title">
+                  <p>${produto.title}</p>
+                  <img src="" alt="">
+                </div>
+                <div class="product_subtitle">
+                  <p>${produto.description}</p>
+                  <p>Entregue por: <span>DevIt</span></p>
+                  <p>Cor: <span>Preto</span></p>
+                </div>
               </div>
-              <div class="product_subtitle">
-                <p>Vendido por: <span>DevIt</span></p>
-                <p>Entregue por: <span>DevIt</span></p>
-                <p>Cor: <span>Preto</span></p>
+            </div>
+            <div class="line"></div>
+            <div class="product_information">
+              <div class="product_amount">
+                <p>Quantidade:</p>
+                <img src="./src/img/icons8-menos-30.png" alt="">
+                <p>${product.quantity}</p>
+                <img src="./src/img/icons8-mais-48.png" alt="">
               </div>
+              <div class="product_price">
+                <p>R$ ${produto.price}</p>
+              </div>
+              <div class="product_price_total">R$ ${(produto.price * product.quantity).toFixed(2)} no Pix</div> <!-- Total por produto -->
             </div>
           </div>
-          <div class="line"></div>
-          <div class="product_information">
-            <div class="product_amount">
-              <p>Quantidade:</p>
-              <img src="./src/img/icons8-menos-30.png" alt="">
-              <p>${produto.quantidade}</p>
-              <img src="./src/img/icons8-mais-48.png" alt="">
+          <div class="box_2">
+            <h2>Resumo da compra</h2>
+            <div class="summary_one">
+              <p>Subtotal (${product.quantity} item${product.quantity > 1 ? 's' : ''})</p>
+              <p>R$ ${(produto.price * product.quantity).toFixed(2)}</p>
             </div>
-            <div class="product_price">
-              <p>R$ ${produto.price}</p>
-              <p class="product_discount">-5% OFF</p>
+            <div class="summary_one">
+              <p>Valor total:</p>
+              <p>R$ ${(produto.price * product.quantity).toFixed(2)} no Pix</p>
             </div>
-            <div class="product_price_total">R$ 715,34 no Pix</div>
+            <button>Finalizar</button>
+            <button>Escolher mais produtos</button>
           </div>
-          <div class="product_adress">
-            <p>Consultar frete e prazo de entrega</p>
-            <div class="input_adress">
-              <input type="text" placeholder="CEP">
-              <button>Consultar</button>
-            </div>
-          </div>
-        </div>
-        <div class="box_2">
-          <h1>Resumo da compra</h1>
-          <div class="summary_one">
-            <p>Subtotal (1 item)</p>
-            <p>R$ 752,99</p>
-          </div>
-          <div class="summary_one">
-            <p>Cupom de desconto:</p>
-            <p>Adicionar</p>
-          </div>
-          <div class="summary_one">
-            <p>Valor total:</p>
-            <p>R$ 715,34 no Pix</p>
-          </div>
-          <button>Finalizar</button>
-          <button>Escolher mais produtos</button>
-        </div>
         `;
         carrinhoContainer?.appendChild(carrinhoDiv);
+      });
     });
 
-    console.log(carrinho);
-    return carrinho;
+    // aguarda todas as promises serem resolvidas
+    await Promise.all(promessas);
   } else {
-    return [];
+    console.warn("Carrinho vazio ou não encontrado.");
   }
 }
 
-listaCarrinho();
+listaCarrinho()
+

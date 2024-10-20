@@ -9,6 +9,15 @@ Regras:
 Apenas usuários logados podem adicionar produtos ao carrinho.
  */
 
+interface Produto {
+  title: string;
+  image: string;
+  price: number;
+  description: string;
+  id: number;
+  quantidade?: number; // Adicionando quantidade como opcional
+}
+
 async function listaProdutos() {
   const response = await fetch("https://fakestoreapi.com/products");
   const data = await response.json();
@@ -43,7 +52,7 @@ listaProdutos().then((produtos) => {
       );
 
       adicionarAoCarrinhoButton?.addEventListener("click", () => {
-        // todo: lógica para adicionar ao carrinho
+        console.log('carrinho adicionado')
         if (sessionStorage.getItem("authToken")) {
           console.log("Adicionado ao carrinho: " + produto.title);
           adicionarAoCarrinho(produto);
@@ -56,27 +65,45 @@ listaProdutos().then((produtos) => {
   );
 });
 
-interface Produto {
-  title: string;
-  image: string;
-  price: number;
-  description: string;
-  id: number;
-  quantidade?: number; // Adicionando quantidade como opcional
+function decodeJWT(token: string): any {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join('')
+  );
+
+  return JSON.parse(jsonPayload);
+}
+
+async function getUserCards(){
+  const token = sessionStorage.getItem("authToken");
+  const userId = token ? decodeJWT(token).id : null;
+
+  //if (!userId) return; // Não deve adicionar se não estiver autenticado
+
+  const carrinhoKey = `carrinho_${userId}`;
+
+  const response = await fetch(`https://fakestoreapi.com/carts/user/${carrinhoKey}`);
+  const carrinho = await response.json();
+  sessionStorage.setItem(carrinhoKey, JSON.stringify(carrinho));
 }
 
 function adicionarAoCarrinho(produto: Produto) {
-  // Tenta obter o carrinho do sessionStorage e usa um array vazio se não existir
-  let carrinho: Produto[] = JSON.parse(sessionStorage.getItem("carrinho") as string) || [];
-
+  getUserCards()
+  let carrinho: Produto[] = JSON.parse(sessionStorage.getItem("carrinhoKey") as string) || [];
+  console.log(carrinho)
   const produtoExistente = carrinho.find((item) => item.id === produto.id);
-  
+
   if (produtoExistente) {
-    produtoExistente.quantidade! += 1;
+    produtoExistente.quantidade! += 1; // Aumenta a quantidade
   } else {
-    carrinho.push({ ...produto, quantidade: 1 }); 
+    carrinho.push({ ...produto, quantidade: 1 }); // Adiciona novo produto
   }
 
-  sessionStorage.setItem("carrinho", JSON.stringify(carrinho));
-  window.location.pathname = "/src/Carrinho/carrinho.html";
+  window.location.pathname = "/src/Carrinho/carrinho.html"; // Redireciona para o carrinho
 }
