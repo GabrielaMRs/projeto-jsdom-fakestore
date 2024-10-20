@@ -132,15 +132,15 @@ async function listaCarrinho() {
             <p>Valor total:</p>
             <p>R$ ${(produto.price * product.quantity).toFixed(2)} no Pix</p>
           </div>
-          <button>Finalizar</button>
-          <button>Escolher mais produtos</button>
+          <button id="button-finaliza">Finalizar</button>
+          <button id="button-redireciona">Escolher mais produtos</button>
         </div>
       </div>
         `;
         carrinhoContainer?.appendChild(carrinhoDiv);
       });
     });
-
+    
     // aguarda todas as promises serem resolvidas
     await Promise.all(promessas);
   } else {
@@ -148,5 +148,11 @@ async function listaCarrinho() {
   }
 }
 
-listaCarrinho()
+await listaCarrinho();
+
+const buttonRedireciona = document.getElementById("button-redireciona") as HTMLButtonElement;
+buttonRedireciona.addEventListener("click", () => {
+  window.location.href = "/index.html";
+});
+
 
