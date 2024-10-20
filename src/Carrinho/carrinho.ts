@@ -12,7 +12,12 @@ Garantir que o carrinho reflete o usuário atual logado. */
 interface ICarrinhoUser {
   id: number;
   date: string;
-  products: string[];
+  products: IProduct[];
+}
+
+interface IProduct {
+  productId: number;
+  quantity: number;
 }
 
 function decodeJWT(token: string): any {
