@@ -28,10 +28,27 @@ async function listaProdutos(category?: string) {
 
 document.getElementById('filter-button')?.addEventListener('click', () => {
   const selectedCategory = (document.getElementById('category-select') as HTMLSelectElement).value;
+  const selectedSort = (document.getElementById('sort-select') as HTMLSelectElement).value;
   listaProdutos(selectedCategory).then((produtos) => {
-      exibirProdutos(produtos);
+    const produtosOrdenados = ordenarProdutos(produtos, selectedSort);
+    exibirProdutos(produtosOrdenados);
   });
 });
+
+function ordenarProdutos(produtos: Produto[], criterio: string) {
+  switch (criterio) {
+    case 'price-asc':
+      return produtos.sort((a, b) => a.price - b.price);
+    case 'price-desc':
+      return produtos.sort((a, b) => b.price - a.price);
+    case 'title-asc':
+      return produtos.sort((a, b) => a.title.localeCompare(b.title));
+    case 'title-desc':
+      return produtos.sort((a, b) => b.title.localeCompare(a.title));
+    default:
+      return produtos;
+  }
+}
 
 function exibirProdutos(produtos: Produto[]) {
   const produtosContainer = document.getElementById("produtos-container");
@@ -146,4 +163,13 @@ buttonCarrinho.addEventListener("click", () => {
     alert("Faça login para ver o seu carrinho.");
     window.location.pathname = "/src/Login/login.html";
   }
+})
+
+
+const ordenarButton = document.getElementById('ordenar-button') as HTMLButtonElement;
+
+ordenarButton.addEventListener('click', () => {
+  fetch('https://fakestoreapi.com/carts?sort=desc')
+    .then(res=>res.json())
+    .then(json=>console.log(json))
 })
