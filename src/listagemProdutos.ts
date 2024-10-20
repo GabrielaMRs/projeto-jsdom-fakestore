@@ -21,59 +21,55 @@ interface Produto {
 
 const token = sessionStorage.getItem("authToken");
 
-async function listaProdutos() {
-  const response = await fetch("https://fakestoreapi.com/products");
+async function listaProdutos(category?: string) {
+  const response = await fetch("https://fakestoreapi.com/products" + (category ? `/category/${category}` : ''));
   const data = await response.json();
   return data;
 }
 
-listaProdutos().then((produtos) => {
-  const produtosContainer = document.getElementById("produtos-container");
+document.getElementById('filter-button')?.addEventListener('click', () => {
+  const selectedCategory = (document.getElementById('category-select') as HTMLSelectElement).value;
+  listaProdutos(selectedCategory).then((produtos) => {
+      exibirProdutos(produtos);
+  });
+});
 
-  //todo verificar a tipagem
-  produtos.forEach(
-    (produto: {
-      title: string;
-      image: string;
-      price: number;
-      description: string;
-      id: number;
-    }) => {
+function exibirProdutos(produtos: Produto[]) {
+  const produtosContainer = document.getElementById("produtos-container");
+  if(produtosContainer){produtosContainer.innerHTML = ''; }
+
+  produtos.forEach(produto => {
       const produtoDiv = document.createElement("div");
       produtoDiv.classList.add("produto");
-
       produtoDiv.innerHTML = `
-      <h2>${produto.title}</h2>
-      <div class="foto-container">
-        <img src="${produto.image}" alt="${produto.title}"/>
-      </div>
-      
-      <div class="info-container">
-        <p>${produto.description}</p>
-        <div class="compra-container">
-          <p>Preço: $${produto.price}</p>
-          <button id="button-${produto.id}">Adicionar ao carrinho</button>
-        </div>
-      </div>
-    `;
+          <h2>${produto.title}</h2>
+          <div class="foto-container">
+              <img src="${produto.image}" alt="${produto.title}"/>
+          </div>
+          <div class="info-container">
+              <p>${produto.description}</p>
+              <div class="compra-container">
+                  <p>Preço: $${produto.price}</p>
+                  <button id="button-${produto.id}">Adicionar ao carrinho</button>
+              </div>
+          </div>
+      `;
       produtosContainer?.appendChild(produtoDiv);
 
-      const adicionarAoCarrinhoButton = document.getElementById(
-        `button-${produto.id}`
-      );
-
+      const adicionarAoCarrinhoButton = document.getElementById(`button-${produto.id}`);
       adicionarAoCarrinhoButton?.addEventListener("click", () => {
-        console.log('carrinho adicionado')
-        if (sessionStorage.getItem("authToken")) {
-          console.log("Adicionado ao carrinho: " + produto.title);
-          adicionarAoCarrinho(produto);
-        } else {
-          alert("Faça login para adicionar produtos ao carrinho.");
-          window.location.pathname = "/src/Login/login.html";
-        }
+          if (sessionStorage.getItem("authToken")) {
+              adicionarAoCarrinho(produto);
+          } else {
+              alert("Faça login para adicionar produtos ao carrinho.");
+              window.location.pathname = "/src/Login/login.html";
+          }
       });
-    }
-  );
+  });
+}
+
+listaProdutos().then((produtos) => {
+  exibirProdutos(produtos);
 });
 
 function decodeJWT(token: string): any {
