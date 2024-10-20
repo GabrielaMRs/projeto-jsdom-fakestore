@@ -20,7 +20,7 @@ loginForm.addEventListener('submit', async (event: Event) => {
     const token = await authenticateUser(username, password);
     if (token) {
       sessionStorage.setItem('authToken', token);
-      window.location.pathname = '/src/ListagemDeProdutos/listagemProdutos.html'; 
+      window.location.pathname = 'index.html'; 
     }
   } catch (error) {
     displayError('Senha ou Usuário inválidos. Tente novamente.');
