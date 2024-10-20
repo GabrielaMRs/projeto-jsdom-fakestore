@@ -9,19 +9,6 @@ Regras:
 Acesso à página de checkout somente para usuários autenticados.
 Garantir que o carrinho reflete o usuário atual logado. */
 
-interface IProdutoId {
-  productId: number;
-  quantidade: number;
-}
-interface Produto {
-  title: string;
-  image: string;
-  price: number;
-  description: string;
-  id: number;
-  quantidade?: number; // Adicionando quantidade como opcional
-}
-
 interface ICarrinhoUser {
   id: number;
   date: string;
