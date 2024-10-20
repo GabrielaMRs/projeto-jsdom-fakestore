@@ -40,11 +40,7 @@ listaProdutos().then((produtos) => {
       id: number;
     }) => {
       const produtoDiv = document.createElement("div");
-<<<<<<< HEAD:src/listagemProdutos.ts
       produtoDiv.classList.add("produto");
-=======
-      produtoDiv.classList.add("cartao-produto");
->>>>>>> origin/listagem-produtos:src/ListagemDeProdutos/listagemProdutos.ts
 
       produtoDiv.innerHTML = `
       <h2>${produto.title}</h2>
