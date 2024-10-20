@@ -84,48 +84,66 @@ async function listaCarrinho() {
         const carrinhoDiv = document.createElement("div");
         console.log(produto)
         carrinhoDiv.innerHTML = `
-          <div class="box_1">
-            <div class="product">
-              <img class="product_img" src="${produto.image}" alt="">
-              <div class="product_descricao">
-                <div class="product_title">
-                  <p>${produto.title}</p>
-                  <img src="" alt="">
-                </div>
-                <div class="product_subtitle">
+      
+      <div class="box">
+        <div class="box_1">
+          <div class="product">
+            <img class="product_img" src="${produto.image}" alt="" />
+            <div class="product_descricao">
+              <div class="product_title">
+                <p>${produto.title}</p>
+                <img src="" alt="" />
+              </div>
+              <div class="product_subtitle">
+                <div class="remove">
                   <p>${produto.description}</p>
-                  <p>Entregue por: <span>DevIt</span></p>
-                  <p>Cor: <span>Preto</span></p>
+                  <img class="lixeira" src="/src/img/lixeira.png" alt="" />
                 </div>
+
+                <p>Entregue por: <span>DevIt</span></p>
+                <p>Cor: <span>Preto</span></p>
               </div>
-            </div>
-            <div class="line"></div>
-            <div class="product_information">
-              <div class="product_amount">
-                <p>Quantidade:</p>
-                <img src="./src/img/icons8-menos-30.png" alt="">
-                <p>${product.quantity}</p>
-                <img src="./src/img/icons8-mais-48.png" alt="">
-              </div>
-              <div class="product_price">
-                <p>R$ ${produto.price}</p>
-              </div>
-              <div class="product_price_total">R$ ${(produto.price * product.quantity).toFixed(2)} no Pix</div> <!-- Total por produto -->
             </div>
           </div>
-          <div class="box_2">
-            <h2>Resumo da compra</h2>
-            <div class="summary_one">
-              <p>Subtotal (${product.quantity} item${product.quantity > 1 ? 's' : ''})</p>
-              <p>R$ ${(produto.price * product.quantity).toFixed(2)}</p>
+          <div class="line"></div>
+          <div class="product_information">
+            <div class="product_amount">
+              <p>Quantidade:</p>
+              <img
+                class="menos_img"
+                src="/src/img/icons8-menos-30.png"
+                alt=""
+              />
+              <p>${product.quantity}</p>
+              <img class="menos_img" src="/src/img/icons8-mais-48.png" alt="" />
             </div>
-            <div class="summary_one">
-              <p>Valor total:</p>
-              <p>R$ ${(produto.price * product.quantity).toFixed(2)} no Pix</p>
+            <div class="product_price">
+              <p>R$ ${produto.price}</p>
+
+              <div class="product_price_total">
+                R$ ${(produto.price * product.quantity).toFixed(2)} no Pix
+              </div>
+              <!-- Total por produto -->
             </div>
-            <button>Finalizar</button>
-            <button>Escolher mais produtos</button>
           </div>
+        </div>
+        <div class="box_2">
+          <h2>Resumo da compra</h2>
+          <div class="summary_one">
+            <p>
+              Subtotal (${product.quantity} iten${product.quantity > 1 ? 's' :
+              ''})
+            </p>
+            <p>R$ ${(produto.price * product.quantity).toFixed(2)}</p>
+          </div>
+          <div class="summary_one">
+            <p>Valor total:</p>
+            <p>R$ ${(produto.price * product.quantity).toFixed(2)} no Pix</p>
+          </div>
+          <button>Finalizar</button>
+          <button>Escolher mais produtos</button>
+        </div>
+      </div>
         `;
         carrinhoContainer?.appendChild(carrinhoDiv);
       });
