@@ -1,3 +1,27 @@
+.header{
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header .right,
+.header .left{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#produtos{
+  padding: 40px;
+  display: flex;
+  gap: 100px;
+  flex-wrap: wrap;
+}
+
+#produtos .produto{
+  width: 300px;
+}
+
 img{
-  width: 200px;
+  height: 200px;
 }

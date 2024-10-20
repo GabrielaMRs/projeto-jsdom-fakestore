@@ -40,6 +40,7 @@ listaProdutos().then((produtos) => {
       id: number;
     }) => {
       const produtoDiv = document.createElement("div");
+      produtoDiv.classList.add("produto");
 
       produtoDiv.innerHTML = `
       <h2>${produto.title}</h2>
