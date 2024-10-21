@@ -150,6 +150,8 @@ async function updateCarrinho() {
   }
 }
 
+
+
 // Função para alterar a quantidade de produtos
 async function alterarQuantidadeProduto(productId: number, change: number) {
   const token = sessionStorage.getItem("authToken");
@@ -181,6 +183,10 @@ async function alterarQuantidadeProduto(productId: number, change: number) {
 function addEventListeners() {
   const botoesMais = document.querySelectorAll(".mais_img");
   const botoesMenos = document.querySelectorAll(".menos_img");
+  document.getElementById("button-finaliza")?.addEventListener('click', function(){
+    alert("Você finalizou sua compra com sucesso!");
+    window.location.pathname = "/index.html";
+  })
 
   botoesMais.forEach((botao) => {
     botao.addEventListener("click", (event) => {

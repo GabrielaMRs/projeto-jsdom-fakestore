@@ -74,10 +74,6 @@ h1 {
   font-size: 16px;
 }
 
-#password::after{
-  content: url('../img/eye-closed-svgrepo-com.svg')
-}
-
 .error-message {
   color: red;
   margin-bottom: 10px;
