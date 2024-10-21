@@ -233,4 +233,9 @@ async function listaCarrinho() {
 // Inicializa a lista do carrinho
 await listaCarrinho();
 
-const buttonRedireciona = document.getElementById
+const buttonRedireciona = document.getElementById(
+  "button-redireciona"
+) as HTMLButtonElement;
+buttonRedireciona.addEventListener("click", () => {
+  window.location.href = "/listagemProdutos.ts";
+});
