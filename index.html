@@ -7,31 +7,35 @@
   <title>Produtos</title>
 </head>
 <body>
-  <div class="header">
-    <div class="left">
+  <div id="main-container" class="header">
+    <div id="filtro-container" class="left">
       <select id="category-select">
-          <option value="">Selecione a categoria</option>
-          <option value="jewelery">Joias</option>
-          <option value="electronics">Eletrônicos</option>
-          <option value="men's clothing">Roupas Masculinas</option>
-          <option value="women's clothing">Roupas Femininas</option>
+        <option value="default" selected disabled>Selecione a categoria</option>
+        <option value="jewelery">Joias</option>
+        <option value="electronics">Eletrônicos</option>
+        <option value="men's clothing">Roupas Masculinas</option>
+        <option value="women's clothing">Roupas Femininas</option>
       </select>
+
       <select id="sort-select">
-        <option value="default">Ordenar por</option>
+        <option value="default" selected disabled>Ordenar por</option>
         <option value="price-asc">Preço: Menor para Maior</option>
         <option value="price-desc">Preço: Maior para Menor</option>
         <option value="title-asc">Título: A a Z</option>
         <option value="title-desc">Título: Z a A</option>
       </select>
+
       <button id="filter-button">Filtrar</button>
     </div>
-    <div class="right">
+
+    <div id="botoes-container" class="right">
       <button id="buttonLogin">Login</button>
       <button id="carrinho">Carrinho</button>
     </div>
   </div>
-  <div id="produtos-container">
-  </div>
+
+  <div id="produtos-container"></div>
+
   <script type="module" src="/src/listagemProdutos.ts"></script>
 </body>
 </html>

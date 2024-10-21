@@ -56,7 +56,7 @@ function exibirProdutos(produtos: Produto[]) {
 
   produtos.forEach(produto => {
       const produtoDiv = document.createElement("div");
-      produtoDiv.classList.add("produto");
+      produtoDiv.classList.add("cartao-produto");
       produtoDiv.innerHTML = `
           <h2>${produto.title}</h2>
           <div class="foto-container">
