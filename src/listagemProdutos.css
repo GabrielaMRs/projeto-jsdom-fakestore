@@ -39,18 +39,19 @@ p + button {
   width: 75%;
   font-size: 0.8rem;
   font-weight: 600;
-  padding: 0rem;
-  
-  background-color: var(--branco);
+  padding: 10px 20px;
+  color: var(--branco);
+  background-color: var(--cor-primaria);
   border-radius: 1rem;
 
   transition: 0.3s ease;
 }
 
 p + button:hover {
-  transform: scale(1.2);
-  color: var(--cor-contraste-claro);
+  border: 1px solid var(--cor-primaria);
+  background-color: var(--branco);
   cursor: pointer;
+  color: var(--preto);
 }
 
 button {
@@ -60,8 +61,7 @@ button {
   font-size: 1rem;
   font-weight: bold;
   
-  width: 5rem;
-  padding: 0.25rem;
+  padding: 10px 20px;
 
   border-radius: 1rem;
   border: none;
@@ -70,10 +70,11 @@ button {
 select {
   background-color: var(--branco);
   color: var(--cor-subtitulo);
+  padding: 10px;
   
   font-size: 1rem;
 
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   border: none;
 
   margin-right: 2rem;
@@ -82,40 +83,34 @@ select {
 option {
   background-color: var(--branco);
   color: var(--cor-subtitulo);
-
   font-size: 1rem;
 }
 
 #main-container {
   width: 100%;
   padding: 0.5rem;
-
-  display: flex;
-  justify-content: center;
-}
-
-#botoes-container {
-  padding: 1.2rem;
-  margin-left: 5rem;
-  border-radius: 1.5rem;
-
+  padding: 1.4rem 2rem;
   display: flex;
   justify-content: space-between;
 }
 
-#botoes-container button:first-child {
-  margin-right: 1.5rem;
+.botoes-container {
+  padding: 1.2rem;
+  border-radius: 1.5rem;
+  gap: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
-#botoes-container button:hover,
-#filtro-container button:hover {
-  background-color: var(--cor-titulo);
+.botoes-container button:hover {
+  background-color: var(--cor-primaria);
   color: var(--branco);
   
   cursor: pointer;
 
   transition: 0.3s ease-in-out;
 }
+
 
 #filtro-container {
   display: flex;
@@ -148,7 +143,7 @@ option {
 
 .cartao-produto:hover {
   box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem rgba(111, 167, 245, 0.6);
-  transform: scale(1.05);
+  transform: scale(1.01);
   box-shadow: 0.2rem 0.2rem 0.4rem 0.4rem rgba(111, 167, 245, 0.8);
 }
 
@@ -171,7 +166,6 @@ option {
 }
 
 .compra-container {
-  background-color: var(--cor-terciaria);
   border-radius: 2rem;
 
   display: flex;
