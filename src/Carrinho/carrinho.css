@@ -93,6 +93,7 @@ body {
 .menos_img,
 .mais_img {
   width: 20px;
+  cursor: pointer;
 }
 
 .product_information {
