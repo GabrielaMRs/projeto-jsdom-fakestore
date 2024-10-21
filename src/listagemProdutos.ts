@@ -53,8 +53,8 @@ function ordenarProdutos(produtos: Produto[], criterio: string) {
 async function limparFiltros(){
   const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
   const categoriaSelect = document.getElementById('category-select') as HTMLSelectElement;
-  categoriaSelect.value = "";
-  sortSelect.value = "";
+  categoriaSelect.value = "Selecione a categoria";
+  sortSelect.value = "Ordenar por";
   listaProdutos().then((produtos) => {
     exibirProdutos(produtos);
   });
