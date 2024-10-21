@@ -146,7 +146,7 @@ async function updateCarrinho() {
 
       // Adiciona os event listeners para "+" e "-" depois de renderizar o carrinho
       addEventListeners();
-    }
+    } 
   }
 }
 
@@ -237,5 +237,5 @@ const buttonRedireciona = document.getElementById(
   "button-redireciona"
 ) as HTMLButtonElement;
 buttonRedireciona.addEventListener("click", () => {
-  window.location.href = "/listagemProdutos.ts";
+  window.location.pathname = "/index.html";
 });
